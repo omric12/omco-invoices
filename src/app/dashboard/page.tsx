@@ -9,5 +9,11 @@ export default async function PrivatePage() {
     redirect('/login');
   }
 
-  return <p>Hello {JSON.stringify(data)}</p>;
+  return (
+    <p>
+      Hello {data.user.email}
+      <br></br>
+      {JSON.stringify(data.user.user_metadata)}
+    </p>
+  );
 }
