@@ -28,6 +28,8 @@ import {
 import { Button } from '../ui/button';
 import { Invoice } from '@prisma/client';
 import Link from 'next/link';
+import { deleteInvoice } from '@/app/dashboard/invoices/actions';
+import { redirect } from 'next/dist/server/api-utils';
 
 export function InvoicesTable({ tableData }) {
   return (
@@ -78,7 +80,7 @@ function OptionsMenu({ invoiceId }: { invoiceId: string }) {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/invoices/edit/${invoiceId}`}>
+            <Link href={`/dashboard/invoices/${invoiceId}/edit`}>
               <Pencil className='size-4 mr-2' /> Edit
             </Link>
           </DropdownMenuItem>
@@ -93,7 +95,7 @@ function OptionsMenu({ invoiceId }: { invoiceId: string }) {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href=''>
+            <Link href={`/dashboard/invoices/${invoiceId}/delete`}>
               <Trash2 className='size-4 mr-2' /> Delete
             </Link>
           </DropdownMenuItem>

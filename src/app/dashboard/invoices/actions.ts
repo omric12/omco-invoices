@@ -107,3 +107,19 @@ export async function updateInvoice(
   });
   return redirect('/dashboard/invoices');
 }
+
+export async function deleteInvoice(id: string) {
+  const record = await prisma.invoice.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  if (record) {
+    await prisma.invoice.delete({
+      where: {
+        id: id,
+      },
+    });
+  }
+  return redirect('/dashboard/invoices');
+}

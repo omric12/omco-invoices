@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { createInvoice, updateInvoice } from '../../actions';
+import { createInvoice, updateInvoice } from '@/app/dashboard/invoices/actions';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

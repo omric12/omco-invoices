@@ -4,7 +4,7 @@ import { Invoice, InvoicePaymentMethod } from '@prisma/client';
 import { useEffect, useState } from 'react';
 
 import InvoiceForm from '@/components/invoices/invoiceForm';
-import { getInvoiceById } from '../../../actions';
+import { getInvoiceById } from '../../actions';
 
 export default function editInvoicePage({
   params,
