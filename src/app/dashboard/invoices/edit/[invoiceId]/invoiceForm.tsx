@@ -1,5 +1,3 @@
-'use client';
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChevronLeft, Upload } from 'lucide-react';
 import {
@@ -17,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { createInvoice, updateInvoice } from '../../actions';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -24,34 +23,34 @@ import { Input } from '@/components/ui/input';
 import { InvoiceSchema } from '@/lib/schemas/invoiceSchema';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { createInvoice } from '../actions';
 import moment from 'moment';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function AddInvoice() {
+export default function InvoiceForm({ invData, user }) {
+  console.log('invData', invData);
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(InvoiceSchema),
     defaultValues: {
-      name: '',
-      amount: 0,
-      date: moment().format('YYYY-MM-DD'),
-      payment_method: '',
-      description: '',
-      items_quantity: 0,
-      customer_name: '',
-      customer_phone: '',
-      customer_address: '',
-      customer_email: '',
+      name: invData.name,
+      amount: invData.amount,
+      date: moment(invData.date).format('YYYY-MM-DD'),
+      payment_method: invData.payment_method,
+      description: invData.description,
+      items_quantity: invData.items_quantity,
+      customer_name: invData.customer_name,
+      customer_phone: invData.customer_phone,
+      customer_address: invData.customer_address,
+      customer_email: invData.customer_email,
     },
   });
 
   async function handleSubmit(data: z.infer<typeof InvoiceSchema>) {
     console.log('handle submit', { data });
-    await createInvoice(data);
+    await updateInvoice(invData.id, data);
     router.back();
   }
 
@@ -70,7 +69,7 @@ export default function AddInvoice() {
                 <span className='sr-only'>Back</span>
               </Button>
               <h1 className='flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0'>
-                Add Invoice
+                Edit Invoice
               </h1>
               <Badge variant='outline' className='ml-auto sm:ml-0'>
                 In stock

@@ -1,4 +1,4 @@
-import { Download, Ellipsis, Mail, Pencil, Trash2 } from 'lucide-react';
+import { Download, Ellipsis, Eye, Mail, Pencil, Trash2 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,7 +50,7 @@ export function InvoicesTable({ tableData }) {
             <TableCell>{invoice.payment_method}</TableCell>
             <TableCell>{invoice.amount}</TableCell>
             <TableCell className='text-right '>
-              <OptionsMenu />
+              <OptionsMenu invoiceId={invoice.id} />
             </TableCell>
           </TableRow>
         ))}
@@ -64,7 +64,7 @@ export function InvoicesTable({ tableData }) {
     </Table>
   );
 }
-function OptionsMenu() {
+function OptionsMenu({ invoiceId }: { invoiceId: string }) {
   return (
     <div className='flex w-fill text-right justify-end'>
       <DropdownMenu>
@@ -73,7 +73,12 @@ function OptionsMenu() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>
           <DropdownMenuItem asChild>
-            <Link href=''>
+            <Link href={`/dashboard/invoices/${invoiceId}`}>
+              <Eye className='size-4 mr-2' /> View
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={`/dashboard/invoices/edit/${invoiceId}`}>
               <Pencil className='size-4 mr-2' /> Edit
             </Link>
           </DropdownMenuItem>

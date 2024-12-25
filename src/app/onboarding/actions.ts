@@ -14,6 +14,7 @@ export async function updateOnboarding(formData: FormData) {
     lastName: formData.get('lastName') as string,
     address: formData.get('address') as string,
     phoneNumber: formData.get('phone') as string,
+    companyName: formData.get('companyName') as string,
   };
   console.log(data);
   const { error } = await supabase.auth.updateUser({
@@ -22,6 +23,7 @@ export async function updateOnboarding(formData: FormData) {
       lastName: data.lastName,
       address: data.address,
       phone: data.phoneNumber,
+      companyName: data.companyName,
       status: 'onboarded',
     },
   });

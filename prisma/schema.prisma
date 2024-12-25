@@ -17,13 +17,13 @@ model Invoice {
   id               String               @id @default(uuid())
   user_id          String
   number           Int?                 @default(autoincrement())
-  name             String?
+  name             String
   amount           Float
   date             DateTime
   payment_method   InvoicePaymentMethod
   description      String?
   items_quantity   Int?
-  customer_name    String?
+  customer_name    String
   customer_phone   String?
   customer_address String?
   customer_email   String?

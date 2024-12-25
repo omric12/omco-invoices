@@ -35,12 +35,14 @@ export default function OnboardingPage() {
               </div>
             </div>
             <div className='grid gap-2'>
-              {' '}
+              <Label>Company</Label>
+              <Input name='companyName' id='companyName' type='text' />
+            </div>
+            <div className='grid gap-2'>
               <Label>Address</Label>
               <Input name='address' id='address' type='text' />
             </div>
             <div className='grid gap-2'>
-              {' '}
               <Label>Phone Number</Label>
               <Input name='phone' id='phone' type='text' />
             </div>

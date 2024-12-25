@@ -20,8 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' className='light' style={{ colorScheme: 'light' }}>
-      <body className={`font-sans ${inter.variable}`}>
+    <html lang='en' suppressHydrationWarning>
+      <head />
+      <body>
         <ThemeProvider
           attribute='class'
           defaultTheme='system'
