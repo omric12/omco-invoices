@@ -20,7 +20,7 @@ import { createInvoice, updateInvoice } from '@/actions/invoices-actions';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { InvoiceSchema } from '../../lib/schemas/invoiceSchema';
+import { InvoiceSchema } from '@/lib/schemas/invoiceSchema';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import moment from 'moment';
@@ -29,7 +29,7 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function InvoiceForm({ invData, user }) {
+export default function InvoiceForm({ invData }) {
   console.log('invData', invData);
   const router = useRouter();
   const form = useForm({

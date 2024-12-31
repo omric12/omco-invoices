@@ -4,9 +4,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../../../../components/ui/card';
+} from '@/components/ui/card';
 
-import { getInvoiceById } from '../actions';
+import { getInvoiceById } from '@/actions/invoices-actions';
 import moment from 'moment';
 
 export default async function InvoiceIdPage({
@@ -15,13 +15,13 @@ export default async function InvoiceIdPage({
   params: Promise<{ invoiceId: string }>;
 }) {
   const slug = (await params).invoiceId;
-  const { invData, user } = await getInvoiceById(slug);
+  const { invData } = await getInvoiceById(slug);
   return (
     <>
       <div>
         <Card>
           <CardHeader className='flex items-center justify-between'>
-            <CardTitle>{user.user_metadata.companyName}</CardTitle>
+            <CardTitle>TODO Company Name</CardTitle>
           </CardHeader>
           <CardContent>
             <div className='flex justify-between pt-16'>
@@ -74,9 +74,9 @@ export default async function InvoiceIdPage({
           <CardFooter>
             <div className='pt-16 text-sm'>
               <p className='font-bold'>PAYMENT ADVICE</p>
-              <p>{user.user_metadata.companyName}</p>
-              <p>{user.user_metadata.address}</p>
-              <p>{user.user_metadata.phone}</p>
+              <p>TODO User companyNam</p>
+              <p>TODO User address</p>
+              <p>TODO User phone</p>
             </div>
           </CardFooter>
         </Card>

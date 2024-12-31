@@ -26,7 +26,6 @@ import {
 } from '../ui/table';
 
 import { Button } from '../ui/button';
-import { Invoice } from '@prisma/client';
 import Link from 'next/link';
 import { deleteInvoice } from '../../app/dashboard/invoices/actions';
 import moment from 'moment';

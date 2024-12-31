@@ -1,9 +1,8 @@
 'use client';
 
-import { Invoice, InvoicePaymentMethod } from '@prisma/client';
 import { useEffect, useState } from 'react';
 
-import InvoiceForm from '../../../../../components/invoices/invoiceForm';
+import InvoiceForm from '@/components/invoices/invoiceForm';
 import { getInvoiceById } from '@/actions/invoices-actions';
 
 export default function editInvoicePage({
