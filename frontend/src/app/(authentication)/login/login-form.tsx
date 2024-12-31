@@ -3,7 +3,7 @@ import { GalleryVerticalEnd } from 'lucide-react';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
 import { cn } from '../../../lib/utils';
-import { login } from '../actions';
+import { login } from '@/actions/auth-actions';
 
 export function LoginForm({
   className,
@@ -54,16 +54,3 @@ export function LoginForm({
     </div>
   );
 }
-// import { login, signup } from '../actions';
-
-// export function LoginForm() {
-//   return (
-//     <form action={login}>
-//       <label htmlFor='email'>Email:</label>
-//       <input id='email' name='email' type='email' required />
-//       <label htmlFor='password'>Password:</label>
-//       <input id='password' name='password' type='password' required />
-//       <button>Log in</button>
-//     </form>
-//   );
-// }

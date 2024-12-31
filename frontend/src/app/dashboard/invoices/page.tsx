@@ -19,11 +19,11 @@ import { FilePlus } from 'lucide-react';
 import { InvoicesTable } from '../../../components/invoices/invoicesTable';
 import Link from 'next/link';
 import { buttonVariants } from '../../../components/ui/button';
-import { queryInvoices } from './actions';
+import { getInvoices } from '@/actions/invoices-actions';
 
 export default async function InvoicesPage() {
-  const invData = await queryInvoices();
-
+  const invData = await getInvoices();
+  console.log(invData);
   return (
     <div>
       <Card>

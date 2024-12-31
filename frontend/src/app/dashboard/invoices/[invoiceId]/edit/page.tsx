@@ -4,7 +4,7 @@ import { Invoice, InvoicePaymentMethod } from '@prisma/client';
 import { useEffect, useState } from 'react';
 
 import InvoiceForm from '../../../../../components/invoices/invoiceForm';
-import { getInvoiceById } from '../../actions';
+import { getInvoiceById } from '@/actions/invoices-actions';
 
 export default function editInvoicePage({
   params,
@@ -27,15 +27,12 @@ export default function editInvoicePage({
 
   const [inv, setInvData] = useState<InvoiceData | undefined>(undefined);
   const [usr, setUser] = useState<any>(undefined);
-  //   const slug = (await params).invoiceId;
-  //   const { invData, user } = await getInvoiceById(slug);
 
   useEffect(() => {
     const fetchInvoice = async () => {
       const { invoiceId } = await params;
-      const { invData, user } = await getInvoiceById(invoiceId);
+      const { invData } = await getInvoiceById(invoiceId);
       setInvData(invData);
-      setUser(user);
     };
     fetchInvoice();
   }, []);

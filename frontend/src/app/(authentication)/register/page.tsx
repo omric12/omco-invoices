@@ -19,6 +19,7 @@ import {
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import Link from 'next/link';
+import { register } from '@/actions/auth-actions';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
@@ -84,21 +85,21 @@ export default function RegisterForm() {
     },
   });
 
-  async function handleSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values });
+  // async function handleSubmit(values: z.infer<typeof formSchema>) {
+  //   console.log({ values });
 
-    const response = await fetch(process.env.MS_REST + '/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(values),
-    });
+  //   const response = await fetch(process.env.MS_REST + '/api/register', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(values),
+  //   });
 
-    if (response.ok) {
-      router.push('/dashboard');
-    } else {
-      console.log('error' + response.status);
-    }
-  }
+  //   if (response.ok) {
+  //     router.push('/dashboard');
+  //   } else {
+  //     console.log('error' + response.status);
+  //   }
+  // }
   return (
     <Card className='mx-auto mt-20 max-w-sm'>
       <CardHeader>
@@ -109,7 +110,7 @@ export default function RegisterForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)}>
+          <form>
             <div className='grid gap-4'>
               <div className='grid grid-cols-2 gap-4'>
                 <div className='grid gap-2'>
@@ -209,7 +210,7 @@ export default function RegisterForm() {
                   )}
                 />
               </div>
-              <Button type='submit' className='w-full'>
+              <Button type='submit' className='w-full' formAction={register}>
                 Create an account
               </Button>
               <Button variant='outline' className='w-full'>
@@ -220,7 +221,7 @@ export default function RegisterForm() {
         </Form>
         <div className='mt-4 text-center text-sm'>
           Already have an account?{' '}
-          <Link href='#' className='underline'>
+          <Link href='/login' className='underline'>
             Sign in
           </Link>
         </div>

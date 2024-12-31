@@ -29,7 +29,7 @@ import { Input } from '../../../../components/ui/input';
 import { InvoiceSchema } from '../../../../lib/schemas/invoiceSchema';
 import { Label } from '../../../../components/ui/label';
 import { Textarea } from '../../../../components/ui/textarea';
-import { createInvoice } from '../actions';
+import { createInvoice } from '@/actions/invoices-actions';
 import moment from 'moment';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';

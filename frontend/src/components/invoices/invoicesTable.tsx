@@ -29,6 +29,7 @@ import { Button } from '../ui/button';
 import { Invoice } from '@prisma/client';
 import Link from 'next/link';
 import { deleteInvoice } from '../../app/dashboard/invoices/actions';
+import moment from 'moment';
 import { redirect } from 'next/dist/server/api-utils';
 
 export function InvoicesTable({ tableData }) {
@@ -46,13 +47,13 @@ export function InvoicesTable({ tableData }) {
       </TableHeader>
       <TableBody>
         {tableData.map((invoice: Invoice) => (
-          <TableRow key={invoice.id}>
+          <TableRow key={invoice.ID}>
             <TableCell className='font-medium'>{invoice.number}</TableCell>
-            <TableCell>{invoice.date.toLocaleDateString('en-001')}</TableCell>
+            <TableCell>{moment(invoice.date).format('DD/MM/YYYY')}</TableCell>
             <TableCell>{invoice.payment_method}</TableCell>
             <TableCell>{invoice.amount}</TableCell>
             <TableCell className='text-right '>
-              <OptionsMenu invoiceId={invoice.id} />
+              <OptionsMenu invoiceId={invoice.ID} />
             </TableCell>
           </TableRow>
         ))}
