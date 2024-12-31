@@ -30,7 +30,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function InvoiceForm({ invData }) {
-  console.log('invData', invData);
+  // console.log('invData', invData);
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(InvoiceSchema),
@@ -49,9 +49,10 @@ export default function InvoiceForm({ invData }) {
   });
 
   async function handleSubmit(data: z.infer<typeof InvoiceSchema>) {
-    console.log('handle submit', { data });
-    await updateInvoice(invData.id, data);
-    router.back();
+    // console.log('handle submit', { data });
+    // console.log('handle invData.id', invData.ID);
+    await updateInvoice(invData.ID, data);
+    router.push('/dashboard/invoices');
   }
 
   return (

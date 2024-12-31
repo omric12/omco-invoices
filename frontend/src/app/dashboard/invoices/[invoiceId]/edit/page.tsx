@@ -25,7 +25,6 @@ export default function editInvoicePage({
   }
 
   const [inv, setInvData] = useState<InvoiceData | undefined>(undefined);
-  const [usr, setUser] = useState<any>(undefined);
 
   useEffect(() => {
     const fetchInvoice = async () => {
@@ -36,5 +35,5 @@ export default function editInvoicePage({
     fetchInvoice();
   }, []);
 
-  return inv ? <InvoiceForm invData={inv} user={usr} /> : <div>Loading...</div>;
+  return inv ? <InvoiceForm invData={inv} /> : <div>Loading...</div>;
 }

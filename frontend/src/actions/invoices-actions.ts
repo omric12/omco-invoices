@@ -85,6 +85,7 @@ export async function updateInvoice(id: string, formData: FormData) {
   if (!token) {
     redirect('/login');
   }
+  const validateData = InvoiceSchema.parse(formData);
 
   const response = await fetch(
     `${process.env.BACKEND_URL}/api/invoices/${id}`,
@@ -94,20 +95,12 @@ export async function updateInvoice(id: string, formData: FormData) {
         Authorization: `Bearer ${token.value}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        invoice_number: formData.get('invoice_number'),
-        date: formData.get('date'),
-        due_date: formData.get('due_date'),
-        customer_name: formData.get('customer_name'),
-        customer_email: formData.get('customer_email'),
-        items: formData.get('items'),
-        total: formData.get('total'),
-        status: formData.get('status'),
-      }),
+      body: JSON.stringify(validateData),
     }
   );
 
   if (!response.ok) {
+    //console.log('response: ', response);
     throw new Error('Failed to update invoice');
   }
 
