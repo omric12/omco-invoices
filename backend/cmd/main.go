@@ -20,7 +20,13 @@ func main() {
 	if err := cfg.DB.AutoMigrate(&models.User{}); err != nil {
 		log.Fatal("Failed to migrate database:", err)
 	}
+	if err := cfg.DB.AutoMigrate(&models.Company{}); err != nil {
+		log.Fatal("Failed to migrate database:", err)
+	}
 	if err := cfg.DB.AutoMigrate(&models.Invoice{}); err != nil {
+		log.Fatal("Failed to migrate database:", err)
+	}
+	if err := cfg.DB.AutoMigrate(&models.UserInvoiceCounter{}); err != nil {
 		log.Fatal("Failed to migrate database:", err)
 	}
 
@@ -29,6 +35,7 @@ func main() {
 	// Initialize handlers
 	authHandler := handlers.NewAuthHandler(cfg.DB, cfg.JWTSecret)
 	invoiceHandler := handlers.NewInvoiceHandler(cfg.DB)
+	companyHandler := handlers.NewCompanyHandler(cfg.DB)
 
 	// Public routes
 	auth := r.Group("/auth")
@@ -48,6 +55,12 @@ func main() {
 			invoices.GET("/:id", invoiceHandler.GetInvoice)
 			invoices.PUT("/:id", invoiceHandler.UpdateInvoice)
 			invoices.DELETE("/:id", invoiceHandler.DeleteInvoice)
+		}
+		company := api.Group("/company")
+		{
+			company.GET("/", companyHandler.GetCompanies)
+			company.POST("/", companyHandler.CreateCompany)
+			company.PUT("/:id", companyHandler.UpdateCompany)
 		}
 	}
 

@@ -45,7 +45,27 @@ func (h *InvoiceHandler) CreateInvoice(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User ID not found"})
 		return
 	}
-	invoice.UserID = userID.(string)
+	userIDStr := userID.(string)
+
+	// Get or create counter
+	var counter models.UserInvoiceCounter
+	result := h.db.Where("user_id = ?", userIDStr).First(&counter)
+	if result.Error == gorm.ErrRecordNotFound {
+		counter = models.UserInvoiceCounter{UserID: userIDStr}
+	} else if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get counter"})
+		return
+	}
+
+	// Get next number
+	nextNumber, err := counter.GetNextInvoiceNumber(h.db)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate invoice number"})
+		return
+	}
+
+	invoice.UserID = userIDStr
+	invoice.Number = nextNumber
 
 	if err := h.db.Create(&invoice).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create invoice"})
