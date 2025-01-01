@@ -24,6 +24,7 @@ import Link from 'next/link';
 import { NotepadText } from 'lucide-react';
 import React from 'react';
 import { ThemeChanger } from './themeChanger';
+import { logout } from '@/actions/auth-actions';
 import { usePathname } from 'next/navigation';
 
 const navLinks = [
@@ -53,7 +54,7 @@ export default function NavTL({ children }: { children: React.ReactNode }) {
   if (pathnameArr[0] != '') {
     for (let val of pathnameArr) {
       if (val == null || val == 'undefined') {
-        console.log('crumb: ', val);
+        // console.log('crumb: ', val);
         return;
       }
       crumbUrl = crumbUrl + val + '/';
@@ -204,7 +205,7 @@ export default function NavTL({ children }: { children: React.ReactNode }) {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <div className='ml-auto '>

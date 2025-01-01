@@ -27,7 +27,7 @@ export async function login(formData: FormData) {
 
     // Set cookie using next/headers
     const cookieStore = await cookies();
-    cookieStore().set('token', data.token, {
+    cookieStore.set('token', data.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -50,7 +50,7 @@ export async function register(formData: FormData) {
       password: formData.get('password'),
     };
 
-    console.log('Request payload:', payload); // Debug payload
+    // console.log('Request payload:', payload); // Debug payload
 
     const response = await fetch(`${process.env.BACKEND_URL}/auth/register`, {
       method: 'POST',
@@ -78,4 +78,15 @@ export async function register(formData: FormData) {
       error: error.message || 'An error occurred during registration',
     };
   }
+}
+
+export async function logout() {
+  const cookieStore = cookies();
+  // Delete the token cookie by setting it to expire immediately
+  cookieStore.set('token', '', {
+    expires: new Date(0),
+    path: '/',
+  });
+
+  redirect('/');
 }

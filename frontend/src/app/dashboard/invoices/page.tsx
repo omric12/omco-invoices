@@ -23,7 +23,7 @@ import { getInvoices } from '@/actions/invoices-actions';
 
 export default async function InvoicesPage() {
   const invData = await getInvoices();
-  console.log(invData);
+  // console.log(invData);
   return (
     <div>
       <Card>

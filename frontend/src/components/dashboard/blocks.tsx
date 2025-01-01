@@ -1,7 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { DollarSign, User, Users } from 'lucide-react';
+import 'moment/min/locales.min';
 
-export function DashboardBlocks() {
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { ChartNoAxesGantt, DollarSign, User, Users } from 'lucide-react';
+
+import moment from 'moment';
+
+// without this line it didn't work
+
+export function DashboardBlocks({ summary }) {
+  moment.locale('en-GB');
+
   return (
     <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4 md:gap-8'>
       <Card>
@@ -11,9 +19,16 @@ export function DashboardBlocks() {
         </CardHeader>
         <CardContent>
           <div>
-            <h2 className='text-3xl font-bold'>$1,000</h2>
-            <p className='text-sm text-muted-foreground'>
-              Based on the last 30 days
+            <h2 className='text-3xl font-bold'>
+              $
+              {summary.TotalAmount.toLocaleString('en-us', {
+                maximumFractionDigits: 2,
+              })}
+            </h2>
+            <p>{moment(summary.ToDate).format('DD.MM.YYYY')}</p>
+            <p className='text-sm text-muted-foreground mt-2'>
+              {moment(summary.ToDate).format('MMM DD YYYY')} -{' '}
+              {moment(summary.FromDate).format('MMM DD YYYY')}
             </p>
           </div>
         </CardContent>
@@ -26,9 +41,33 @@ export function DashboardBlocks() {
         </CardHeader>
         <CardContent>
           <div>
-            <h2 className='text-3xl font-bold'>$1,000</h2>
-            <p className='text-sm text-muted-foreground'>
-              Based on the last 30 days
+            <h2 className='text-3xl font-bold'> {summary.TotalInvoices}</h2>
+            <p className='text-sm text-muted-foreground mt-2'>
+              {moment(summary.ToDate).format('MMM DD YYYY')} -{' '}
+              {moment(summary.FromDate).format('MMM DD YYYY')}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className='flex items-center flex-row justify-between pb-2'>
+          <CardTitle>Average Invoice Amount</CardTitle>
+          <ChartNoAxesGantt className='size-4' />
+        </CardHeader>
+        <CardContent>
+          <div>
+            <h2 className='text-3xl font-bold'>
+              {' '}
+              $
+              {(summary.TotalAmount / summary.TotalInvoices).toLocaleString(
+                'en-us',
+                { maximumFractionDigits: 2 }
+              )}
+            </h2>
+            <p className='text-sm text-muted-foreground mt-2'>
+              {moment(summary.ToDate).format('MMM DD YYYY')} -{' '}
+              {moment(summary.FromDate).format('MMM DD YYYY')}
             </p>
           </div>
         </CardContent>

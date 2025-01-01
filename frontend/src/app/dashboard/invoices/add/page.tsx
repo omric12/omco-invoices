@@ -55,9 +55,9 @@ export default function AddInvoice() {
   });
 
   async function handleSubmit(data: z.infer<typeof InvoiceSchema>) {
-    console.log('handle submit', { data });
+    // console.log('handle submit', { data });
     await createInvoice(data);
-    router.back();
+    router.push('/dashboard/invoices');
   }
 
   return (

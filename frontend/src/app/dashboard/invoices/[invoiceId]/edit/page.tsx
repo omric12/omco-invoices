@@ -10,6 +10,11 @@ export default function editInvoicePage({
 }: {
   params: Promise<{ invoiceId: string }>;
 }) {
+  enum InvoicePaymentMethod {
+    CASH,
+    BIT,
+    PAYBOX,
+  }
   interface InvoiceData {
     number: number | null;
     name: string;
