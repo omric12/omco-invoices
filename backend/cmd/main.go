@@ -36,6 +36,7 @@ func main() {
 	authHandler := handlers.NewAuthHandler(cfg.DB, cfg.JWTSecret)
 	invoiceHandler := handlers.NewInvoiceHandler(cfg.DB)
 	companyHandler := handlers.NewCompanyHandler(cfg.DB)
+	summaryHandler := handlers.NewSummaryHandler(cfg.DB)
 
 	// Public routes
 	auth := r.Group("/auth")
@@ -61,6 +62,10 @@ func main() {
 			company.GET("/", companyHandler.GetCompanies)
 			company.POST("/", companyHandler.CreateCompany)
 			company.PUT("/:id", companyHandler.UpdateCompany)
+		}
+		summary := api.Group("/summary")
+		{
+			summary.GET("/", summaryHandler.GetSummary)
 		}
 	}
 
