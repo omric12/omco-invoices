@@ -1,0 +1,295 @@
+openapi: 3.0.0
+info:
+  title: Invoice Management System API
+  description: API documentation for the Invoice Management System
+  version: 1.0.0
+  contact:
+    email: your-email@example.com
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+          minLength: 6
+
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        amount:
+          type: number
+          format: float
+        date:
+          type: string
+          format: date
+        payment_method:
+          type: string
+        description:
+          type: string
+        items_quantity:
+          type: integer
+        customer_name:
+          type: string
+        customer_phone:
+          type: string
+        customer_address:
+          type: string
+        customer_email:
+          type: string
+          format: email
+
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+          format: email
+
+    Summary:
+      type: object
+      properties:
+        total_invoices:
+          type: integer
+        total_revenue:
+          type: number
+        payment_distribution:
+          type: object
+          additionalProperties:
+            type: integer
+
+security:
+  - BearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      security: [] # No authentication required
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Invalid input
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login user
+      security: [] # No authentication required
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Invalid credentials
+
+  /api/invoices:
+    get:
+      tags:
+        - Invoices
+      summary: Get all invoices
+      security:
+        - BearerAuth: [] # Protected route - requires JWT
+      responses:
+        '200':
+          description: List of invoices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+        '401':
+          description: Unauthorized - Invalid or missing token
+        '403':
+          description: Forbidden - Token is valid but lacks permissions
+
+    post:
+      tags:
+        - Invoices
+      summary: Create new invoice
+      security:
+        - BearerAuth: [] # Protected route - requires JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '201':
+          description: Invoice created successfully
+
+  /api/invoices/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      tags:
+        - Invoices
+      summary: Get invoice by ID
+      security:
+        - BearerAuth: [] # Protected route - requires JWT
+      responses:
+        '200':
+          description: Invoice details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+
+    put:
+      tags:
+        - Invoices
+      summary: Update invoice
+      security:
+        - BearerAuth: [] # Protected route - requires JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '200':
+          description: Invoice updated successfully
+
+    delete:
+      tags:
+        - Invoices
+      summary: Delete invoice
+      security:
+        - BearerAuth: [] # Protected route - requires JWT
+      responses:
+        '204':
+          description: Invoice deleted successfully
+
+  /api/company:
+    get:
+      tags:
+        - Company
+      summary: Get company information
+      security:
+        - BearerAuth: [] # Protected route - requires JWT
+      responses:
+        '200':
+          description: Company details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+
+    post:
+      tags:
+        - Company
+      summary: Create company profile
+      security:
+        - BearerAuth: [] # Protected route - requires JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Company'
+      responses:
+        '201':
+          description: Company profile created successfully
+
+  /api/company/{id}:
+    put:
+      tags:
+        - Company
+      summary: Update company information
+      security:
+        - BearerAuth: [] # Protected route - requires JWT
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Company'
+      responses:
+        '200':
+          description: Company information updated successfully
+
+  /api/summary:
+    get:
+      tags:
+        - Dashboard
+      summary: Get dashboard statistics
+      security:
+        - BearerAuth: [] # Protected route - requires JWT
+      responses:
+        '200':
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Summary'
+        '401':
+          description: Unauthorized - Invalid or missing token
+        '403':
+          description: Forbidden - Token is valid but lacks permissions
