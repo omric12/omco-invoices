@@ -1,6 +1,6 @@
-# OMCO Invoices - Full Stack Invoice Management System
+# Full Stack Invoice Management System
 
-A modern, full-stack invoice management application built with Next.js 14, Go, and PostgreSQL. This project demonstrates best practices in full-stack development, including authentication, real-time data visualization, and RESTful API design.
+A modern, full-stack invoice management application built with Next.js 15, Go, and PostgreSQL. This project demonstrates full-stack development, including authentication, real-time data visualization, and RESTful API design.
 
 ## 🚀 Features
 
@@ -13,8 +13,6 @@ A modern, full-stack invoice management application built with Next.js 14, Go, a
 - **Invoice Management**
 
   - Create, read, update, and delete invoices
-  - PDF generation and export
-  - Payment status tracking
   - Customer information management
 
 - **Dashboard & Analytics**
@@ -34,7 +32,7 @@ A modern, full-stack invoice management application built with Next.js 14, Go, a
 
 ### Frontend
 
-- Next.js 14 (App Router)
+- Next.js 15 (App Router)
 - TypeScript
 - Tailwind CSS
 - Shadcn/ui
@@ -133,25 +131,6 @@ go run cmd/main.go
 
 - GET /api/summary - Get dashboard statistics
 
-## 📊 Data Models
-
-#### Invoice Schema:
-
-```
-{
-  name: string,
-  amount: number,
-  date: string,
-  payment_method: string,
-  description: string,
-  items_quantity: number,
-  customer_name: string,
-  customer_phone: string,
-  customer_address: string,
-  customer_email?: string
-}
-```
-
 ## 🔒 Authentication
 
 The application uses JWT (JSON Web Tokens) for authentication. Include the JWT token in the Authorization header for protected routes:
@@ -159,14 +138,6 @@ The application uses JWT (JSON Web Tokens) for authentication. Include the JWT t
 ```
 Authorization: Bearer <your_jwt_token>
 ```
-
-## 🎯 Development Features
-
-- Hot reloading with Turbopack
-- TypeScript strict mode enabled
-- ESLint and Prettier configuration
-- Husky pre-commit hooks
-- Comprehensive component testing setup
 
 ## 📝 Project Structure
 
@@ -191,3 +162,11 @@ Authorization: Bearer <your_jwt_token>
 ├── go.mod
 └── go.sum
 ```
+
+## 🚧 Roadmap
+
+- Add and track supplier receipts - WIP
+- PDF generation and export - WIP
+- Payment status tracking
+- login with OAuth
+- Multi-tenancy
