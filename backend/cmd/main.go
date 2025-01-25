@@ -37,6 +37,7 @@ func main() {
 	invoiceHandler := handlers.NewInvoiceHandler(cfg.DB)
 	companyHandler := handlers.NewCompanyHandler(cfg.DB)
 	summaryHandler := handlers.NewSummaryHandler(cfg.DB)
+	pdfHandler := handlers.NewPDFHandler(cfg.DB)
 
 	// Public routes
 	auth := r.Group("/auth")
@@ -56,6 +57,7 @@ func main() {
 			invoices.GET("/:id", invoiceHandler.GetInvoice)
 			invoices.PUT("/:id", invoiceHandler.UpdateInvoice)
 			invoices.DELETE("/:id", invoiceHandler.DeleteInvoice)
+			invoices.GET("/:id/pdf", pdfHandler.GenerateInvoicePDF)
 		}
 		company := api.Group("/company")
 		{

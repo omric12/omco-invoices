@@ -38,16 +38,24 @@ func (h *SummaryHandler) GetSummary(c *gin.Context) {
 	toDefault, _ := time.Parse("02/01/06", from)
 	toDefault = toDefault.AddDate(0, 0, 30)
 	to := c.DefaultQuery("to", toDefault.Format("02/01/06"))
-	startDate, _ := time.Parse("02/01/06", from)
-	endDate, _ := time.Parse("02/01/06", to)
+	startDate, err := time.Parse("02/01/06", from)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid start date format"})
+		return
+	}
+	endDate, err := time.Parse("02/01/06", to)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid end date format"})
+		return
+	}
 	endDate = endDate.AddDate(0, 0, 1)
 
 	// Calculate duration
 	duration := int(endDate.Sub(startDate).Hours() / 24)
 
-	//Format and String dates
-	startDateStr := startDate.Format("02/01/06")
-	endDateStr := endDate.Format("02/01/06")
+	// Format dates for display and database query
+	startDateStr := startDate.Format("2006-01-02") // YYYY-MM-DD for database
+	endDateStr := endDate.Format("2006-01-02")     // YYYY-MM-DD for database
 
 	fmt.Printf("from: %s, to: %s\n", startDateStr, endDateStr)
 	// Get all invoices for the user
