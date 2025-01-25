@@ -1,34 +1,28 @@
 'use client';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '../../../../components/ui/card';
-import { ChevronLeft, Upload } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
-} from '../../../../components/ui/form';
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../../../components/ui/select';
+} from '@/components/ui/select';
 
-import { Badge } from '../../../../components/ui/badge';
-import { Button } from '../../../../components/ui/button';
-import { Input } from '../../../../components/ui/input';
-import { InvoiceSchema } from '../../../../lib/schemas/invoiceSchema';
-import { Label } from '../../../../components/ui/label';
-import { Textarea } from '../../../../components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { InvoiceSchema } from '@/lib/schemas/invoiceSchema';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { createInvoice } from '@/actions/invoices-actions';
 import moment from 'moment';
 import { useForm } from 'react-hook-form';
@@ -36,15 +30,18 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+// First, define the payment method type
+type PaymentMethod = 'CASH' | 'BIT' | 'PAYBOX';
+
 export default function AddInvoice() {
   const router = useRouter();
-  const form = useForm({
+  const form = useForm<z.infer<typeof InvoiceSchema>>({
     resolver: zodResolver(InvoiceSchema),
     defaultValues: {
       name: '',
       amount: 0,
       date: moment().format('YYYY-MM-DD'),
-      payment_method: '',
+      payment_method: 'CASH' as PaymentMethod, // Add type assertion
       description: '',
       items_quantity: 0,
       customer_name: '',
@@ -54,9 +51,14 @@ export default function AddInvoice() {
     },
   });
 
+  // Update the submit handler to match types
   async function handleSubmit(data: z.infer<typeof InvoiceSchema>) {
-    // console.log('handle submit', { data });
-    await createInvoice(data);
+    const formattedData = {
+      ...data,
+      date: data.date || moment().format('YYYY-MM-DD'), // Keep as string
+      payment_method: data.payment_method as PaymentMethod,
+    };
+    await createInvoice(formattedData);
     router.push('/dashboard/invoices');
   }
 

@@ -25,13 +25,21 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 
+import { SummaryType } from '@/types/summaryType';
+import { formatToDisplayDate } from '@/lib/date-utils';
+
 // Helper function to parse and format dates
+// Remove the old formatDate function
 function formatDate(dateString: string): string {
   const date = new Date(dateString.split(' ')[0]); // Remove the timezone offset
   return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 }
 
-export function DashboardGraphs({ summary }) {
+interface DashboardGraphsProps {
+  summary: SummaryType;
+}
+
+export function DashboardGraphs({ summary }: DashboardGraphsProps) {
   const data = summary.Invoices;
   // console.log('data: ', data);
   // Prepare data for charts
@@ -53,7 +61,7 @@ export function DashboardGraphs({ summary }) {
         new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     )
     .reduce((acc, invoice) => {
-      const date = formatDate(invoice.created_at);
+      const date = formatToDisplayDate(invoice.created_at);
       const lastEntry = acc[acc.length - 1];
       const cumulativeAmount = (lastEntry?.amount || 0) + invoice.amount;
       acc.push({ date, amount: cumulativeAmount });
@@ -61,7 +69,7 @@ export function DashboardGraphs({ summary }) {
     }, [] as { date: string; amount: number }[]);
 
   const dailyAmountData = data.reduce((acc, invoice) => {
-    const date = formatDate(invoice.created_at);
+    const date = formatToDisplayDate(invoice.created_at);
     acc[date] = (acc[date] || 0) + invoice.amount;
     return acc;
   }, {} as Record<string, number>);

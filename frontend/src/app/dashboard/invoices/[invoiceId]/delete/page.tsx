@@ -7,14 +7,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../../../../../components/ui/card';
+} from '@/components/ui/card';
 import { useEffect, useState } from 'react';
 
 import { AlertCircle } from 'lucide-react';
-import { Button } from '../../../../../components/ui/button';
-import { deleteInvoice } from '../../actions';
+import { Button } from '@/components/ui/button';
+import { deleteInvoice } from '@/actions/invoices-actions';
 
-export default function editInvoicePage({
+export default function DeleteInvoicePage({
   params,
 }: {
   params: Promise<{ invoiceId: string }>;
@@ -27,10 +27,12 @@ export default function editInvoicePage({
       setSlug(invoiceId);
     };
     fetchInvoice();
-  }, []);
+  });
 
   const handleDelete = async () => {
-    await deleteInvoice(slug);
+    if (slug) {
+      await deleteInvoice(slug);
+    }
   };
 
   return slug ? (

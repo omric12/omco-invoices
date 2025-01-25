@@ -1,12 +1,10 @@
 'use server';
 
+import { InvoiceData } from '@/types/invoiceType';
 import { InvoiceSchema } from '@/lib/schemas/invoiceSchema';
 import { cookies } from 'next/headers';
-import { form } from 'react-hook-form';
-import moment from 'moment';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-
 export async function getInvoices() {
   const cookieStore = await cookies();
   const token = cookieStore.get('token');
@@ -53,7 +51,7 @@ export async function createInvoice(formData: z.infer<typeof InvoiceSchema>) {
   return response.json();
 }
 
-export async function getInvoiceById(id: string): Promise<Invoice> {
+export async function getInvoiceById(id: string): Promise<InvoiceData> {
   const cookieStore = await cookies();
   const token = cookieStore.get('token');
   if (!token) {
@@ -76,35 +74,29 @@ export async function getInvoiceById(id: string): Promise<Invoice> {
   }
   const invData = await response.json();
   // console.log(invData);
-  return { invData };
+  return invData;
 }
 
-export async function updateInvoice(id: string, formData: FormData) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('token');
-  if (!token) {
-    redirect('/login');
-  }
-  const validateData = InvoiceSchema.parse(formData);
-
-  const response = await fetch(
-    `${process.env.BACKEND_URL}/api/invoices/${id}`,
-    {
+export async function updateInvoice(
+  id: string,
+  data: InvoiceData
+): Promise<void> {
+  try {
+    const response = await fetch(`/api/invoices/${id}`, {
       method: 'PUT',
       headers: {
-        Authorization: `Bearer ${token.value}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(validateData),
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update invoice');
     }
-  );
-
-  if (!response.ok) {
-    //console.log('response: ', response);
-    throw new Error('Failed to update invoice');
+  } catch (error) {
+    console.error('Error updating invoice:', error);
+    throw error;
   }
-
-  return response.json();
 }
 
 export async function deleteInvoice(id: string) {

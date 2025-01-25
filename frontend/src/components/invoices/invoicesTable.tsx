@@ -3,17 +3,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select';
 import {
   Table,
   TableBody,
@@ -25,11 +16,8 @@ import {
   TableRow,
 } from '../ui/table';
 
-import { Button } from '../ui/button';
 import Link from 'next/link';
-import { deleteInvoice } from '../../app/dashboard/invoices/actions';
 import moment from 'moment';
-import { redirect } from 'next/dist/server/api-utils';
 
 export function InvoicesTable({ tableData }) {
   return (

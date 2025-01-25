@@ -1,10 +1,10 @@
 'use server';
 
-import { Author } from './../../node_modules/next/dist/lib/metadata/types/metadata-types.d';
+import { SummaryType } from '@/types/summaryType';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export async function getSummary() {
+export async function getSummary(): Promise<SummaryType | undefined> {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token');
@@ -21,5 +21,6 @@ export async function getSummary() {
     return data;
   } catch (error) {
     console.error(error);
+    return undefined;
   }
 }

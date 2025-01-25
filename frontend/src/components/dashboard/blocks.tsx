@@ -1,13 +1,18 @@
 import 'moment/min/locales.min';
 
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { ChartNoAxesGantt, DollarSign, User, Users } from 'lucide-react';
+import { ChartNoAxesGantt, DollarSign, Users } from 'lucide-react';
 
+import { SummaryType } from '@/types/summaryType';
 import moment from 'moment';
 
 // without this line it didn't work
 
-export function DashboardBlocks({ summary }) {
+interface DashboardBlocksProps {
+  summary: SummaryType;
+}
+
+export function DashboardBlocks({ summary }: DashboardBlocksProps) {
   moment.locale('en-GB');
 
   return (

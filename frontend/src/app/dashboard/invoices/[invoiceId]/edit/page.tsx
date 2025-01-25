@@ -2,43 +2,26 @@
 
 import { useEffect, useState } from 'react';
 
+import { InvoiceData } from '@/types/invoiceType';
 import InvoiceForm from '@/components/invoices/invoiceForm';
 import { getInvoiceById } from '@/actions/invoices-actions';
 
-export default function editInvoicePage({
+export default function EditInvoicePage({
   params,
 }: {
   params: Promise<{ invoiceId: string }>;
 }) {
-  enum InvoicePaymentMethod {
-    CASH,
-    BIT,
-    PAYBOX,
-  }
-  interface InvoiceData {
-    number: number | null;
-    name: string;
-    amount: number;
-    payment_method: InvoicePaymentMethod;
-    description: string | null;
-    items_quantity: number | null;
-    customer_name: string;
-    customer_phone: string | null;
-    customer_address: string | null;
-    customer_email: string | null;
-    date: Date;
-  }
-
-  const [inv, setInvData] = useState<InvoiceData | undefined>(undefined);
+  const [inv, setInvData] = useState<InvoiceData | null>(null);
 
   useEffect(() => {
     const fetchInvoice = async () => {
       const { invoiceId } = await params;
-      const { invData } = await getInvoiceById(invoiceId);
+      const response = await getInvoiceById(invoiceId);
+      const invData = response as InvoiceData; // Type assertion
       setInvData(invData);
     };
     fetchInvoice();
-  }, []);
+  }, [params]); // Add dependency array
 
   return inv ? <InvoiceForm invData={inv} /> : <div>Loading...</div>;
 }

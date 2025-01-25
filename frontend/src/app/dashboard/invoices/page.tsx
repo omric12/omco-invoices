@@ -5,15 +5,6 @@ import {
   CardHeader,
   CardTitle,
 } from '../../../components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../../components/ui/table';
 
 import { FilePlus } from 'lucide-react';
 import { InvoicesTable } from '../../../components/invoices/invoicesTable';

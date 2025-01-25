@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const InvoiceSchema = z.object({
   name: z.string().min(2),
   amount: z.coerce.number(),
-  date: z.coerce.date().optional(),
+  date: z.coerce.string().optional(),
   payment_method: z.enum(['BIT', 'CASH', 'PAYBOX']),
   description: z.string().optional(),
   items_quantity: z.number().optional(),

@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '../../ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '../../ui/sheet';
+import { fadeIn, scaleIn } from '@/lib/animations';
 
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
@@ -25,6 +26,7 @@ import { NotepadText } from 'lucide-react';
 import React from 'react';
 import { ThemeChanger } from './themeChanger';
 import { logout } from '@/actions/auth-actions';
+import { motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
 const navLinks = [
@@ -51,10 +53,10 @@ export default function NavTL({ children }: { children: React.ReactNode }) {
   pathnameArr = pathnameArr.slice(1);
   const breadcrumbs: Crumb[] = [];
   let crumbUrl = '';
+  let val;
   if (pathnameArr[0] != '') {
-    for (let val of pathnameArr) {
+    for (val of pathnameArr) {
       if (val == null || val == 'undefined') {
-        // console.log('crumb: ', val);
         return;
       }
       crumbUrl = crumbUrl + val + '/';
@@ -68,48 +70,67 @@ export default function NavTL({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
-      <div className='hidden border-r bg-muted/40 md:block'>
+    <motion.div
+      className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'
+      initial='initial'
+      animate='animate'
+      variants={fadeIn}>
+      <motion.div
+        className='hidden border-r bg-muted/40 md:block'
+        variants={scaleIn}>
         <div className='flex h-full max-h-screen flex-col gap-2'>
-          <div className='flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6 '>
-            <Link href='/' className='flex items-center'>
-              <Package2 />
-              <p className='text-sm font-bold ml-4'>OMCO Invoices</p>
+          <motion.div
+            className='flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6'
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}>
+            <Link href='/' className='flex items-center group'>
+              <Package2 className='transition-transform group-hover:scale-110' />
+              <p className='text-sm font-bold ml-4 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent'>
+                OMCO Invoices
+              </p>
             </Link>
-          </div>
+          </motion.div>
           <div className='flex-1'>
-            <nav className='grid items-start px-2 text-sm font-medium lg:px-4 '>
+            <nav className='grid items-start px-2 text-sm font-medium lg:px-4'>
               {navLinks.map((item, idx) => {
                 if (
                   pathnameArr.at(-1)?.toLowerCase() == item.title.toLowerCase()
                 ) {
                   return (
-                    <Link
+                    <motion.div
                       key={idx}
-                      href={item.href}
-                      className='flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-muted-foreground transition-all hover:text-primary'>
-                      {item.img}
-                      {item.title}
-                    </Link>
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.2 }}>
+                      <Link
+                        href={item.href}
+                        className='flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-muted-foreground transition-all hover:text-primary'>
+                        {item.img}
+                        {item.title}
+                      </Link>
+                    </motion.div>
                   );
                 }
 
                 return (
-                  <Link
+                  <motion.div
                     key={idx}
-                    href={item.href}
-                    className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'>
-                    {item.img}
-                    {item.title}
-                  </Link>
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}>
+                    <Link
+                      href={item.href}
+                      className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'>
+                      {item.img}
+                      {item.title}
+                    </Link>
+                  </motion.div>
                 );
               })}
             </nav>
           </div>
         </div>
-      </div>
-      <div className='flex flex-col '>
-        <header className='sticky top-0 z-30 mt-2 flex h-14 items-center gap-4 bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6'>
+      </motion.div>
+      <motion.div className='flex flex-col' variants={scaleIn}>
+        <header className='sticky top-0 z-30 mt-2 flex h-14 items-center gap-4 bg-background/80 backdrop-blur-sm px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6'>
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -159,9 +180,9 @@ export default function NavTL({ children }: { children: React.ReactNode }) {
             </SheetContent>
           </Sheet>
 
-          <div className='w-full flex-1 '>
+          <div className='w-full flex-1'>
             <div className='relative flex-1 md:grow-0'>
-              <Breadcrumb className='hidden md:flex '>
+              <Breadcrumb className='hidden md:flex'>
                 <BreadcrumbList>
                   {breadcrumbs.map((crumb, idx) => {
                     return (
@@ -181,20 +202,26 @@ export default function NavTL({ children }: { children: React.ReactNode }) {
               </Breadcrumb>
             </div>
           </div>
-          <div className='ml-auto w-full flex-1'>
+          <motion.div
+            className='ml-auto w-full flex-1'
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}>
             <div className='relative flex-1 md:grow-0'>
               <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
               <Input
                 type='search'
                 placeholder='Search...'
-                className='w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]'
+                className='w-full rounded-lg bg-background/80 backdrop-blur-sm pl-8 md:w-[200px] lg:w-[336px] transition-all duration-300 focus:bg-background'
               />
             </div>
-          </div>
+          </motion.div>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant='secondary' size='icon' className='rounded-full'>
+              <Button
+                variant='secondary'
+                size='icon'
+                className='rounded-full hover:scale-105 transition-transform'>
                 <CircleUser className='h-5 w-5' />
                 <span className='sr-only'>Toggle user menu</span>
               </Button>
@@ -208,14 +235,16 @@ export default function NavTL({ children }: { children: React.ReactNode }) {
               <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <div className='ml-auto '>
+          <div className='ml-auto'>
             <div className='relative flex-1 md:grow-0'>
               <ThemeChanger />
             </div>
           </div>
         </header>
-        <div className=''>{children}</div>
-      </div>
-    </div>
+        <motion.div className='' variants={scaleIn}>
+          {children}
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }

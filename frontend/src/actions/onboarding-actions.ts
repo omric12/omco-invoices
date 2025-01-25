@@ -2,7 +2,6 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
 
 export async function updateOnboarding(formData: FormData) {
   try {
@@ -37,9 +36,11 @@ export async function updateOnboarding(formData: FormData) {
     // console.log('data: ', data);
 
     redirect('/dashboard');
-  } catch (error: any) {
-    return {
-      error: error.message || 'An error occurred during login',
-    };
+  } catch (error) {
+    let errorMessage = 'Failed to do something exceptional';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.log(errorMessage);
   }
 }

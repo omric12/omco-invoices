@@ -36,10 +36,12 @@ export async function login(formData: FormData) {
     });
 
     redirect('/dashboard');
-  } catch (error: any) {
-    return {
-      error: error.message || 'An error occurred during login',
-    };
+  } catch (error) {
+    let errorMessage = 'Failed to do something exceptional';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.log(errorMessage);
   }
 }
 
@@ -71,17 +73,18 @@ export async function register(formData: FormData) {
       success: true,
       message: 'Registration successful',
     };
-  } catch (error: any) {
-    console.error('Registration error:', error);
-    return {
-      success: false,
-      error: error.message || 'An error occurred during registration',
-    };
+  } catch (error) {
+    let errorMessage = 'Registration error';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.log(errorMessage);
+    return { success: false, message: errorMessage };
   }
 }
 
 export async function logout() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   // Delete the token cookie by setting it to expire immediately
   cookieStore.set('token', '', {
     expires: new Date(0),

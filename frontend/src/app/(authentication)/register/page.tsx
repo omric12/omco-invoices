@@ -85,21 +85,17 @@ export default function RegisterForm() {
     },
   });
 
-  // async function handleSubmit(values: z.infer<typeof formSchema>) {
-  //   console.log({ values });
+  async function handleSubmit(formData: FormData) {
+    console.log({ formData });
 
-  //   const response = await fetch(process.env.MS_REST + '/api/register', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(values),
-  //   });
-
-  //   if (response.ok) {
-  //     router.push('/dashboard');
-  //   } else {
-  //     console.log('error' + response.status);
-  //   }
-  // }
+    const response = await register(formData);
+    if (response.success) {
+      router.push('/dashboard');
+    } else {
+      //TODO Toast error message
+      console.log('error' + response.message);
+    }
+  }
   return (
     <Card className='mx-auto mt-20 max-w-sm'>
       <CardHeader>
@@ -210,7 +206,10 @@ export default function RegisterForm() {
                   )}
                 />
               </div>
-              <Button type='submit' className='w-full' formAction={register}>
+              <Button
+                type='submit'
+                className='w-full'
+                formAction={handleSubmit}>
                 Create an account
               </Button>
               <Button variant='outline' className='w-full'>

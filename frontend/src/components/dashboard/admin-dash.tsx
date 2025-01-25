@@ -25,40 +25,10 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 
+import { formatToDisplayDate } from '@/lib/date-utils';
 import { useState } from 'react';
 
-// Sample data (replace this with your actual data fetching logic)
-const invoiceData = [
-  {
-    ID: '5bab0129-dc9e-4008-8bf5-e3ae20d571a5',
-    created_at: '2024-12-31T18:02:47.874659 02:00',
-    number: 1,
-    name: '123',
-    amount: 1230,
-    date: '2024-12-31T02:00:00 02:00',
-    payment_method: 'CASH',
-  },
-  {
-    ID: '1f70180c-0515-431d-832a-0c91016e5119',
-    created_at: '2024-12-31T18:03:11.687436 02:00',
-    number: 2,
-    name: '432423',
-    amount: 100,
-    date: '2024-12-31T02:00:00 02:00',
-    payment_method: 'CASH',
-  },
-  {
-    ID: 'dad46852-bf02-441a-b8d9-7540df50ad07',
-    created_at: '2024-12-31T17:47:48.802143 02:00',
-    number: 0,
-    name: '12',
-    amount: 200,
-    date: '2024-12-31T02:00:00 02:00',
-    payment_method: 'CASH',
-  },
-];
-
-// Helper function to parse and format dates
+// Remove the old formatDate function
 function formatDate(dateString: string): string {
   const date = new Date(dateString.split(' ')[0]); // Remove the timezone offset
   return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
@@ -68,9 +38,9 @@ export default function AdminDashboard() {
   const [data] = useState(invoiceData);
 
   // Calculate summary statistics
-  const totalAmount = data.reduce((sum, invoice) => sum + invoice.amount, 0);
-  const averageAmount = totalAmount / data.length;
-  const invoiceCount = data.length;
+  // const totalAmount = data.reduce((sum, invoice) => sum + invoice.amount, 0);
+  // const averageAmount = totalAmount / data.length;
+  // const invoiceCount = data.length;
 
   // Prepare data for charts
   const barChartData = data.map((invoice) => ({
@@ -91,7 +61,7 @@ export default function AdminDashboard() {
         new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     )
     .reduce((acc, invoice) => {
-      const date = formatDate(invoice.created_at);
+      const date = formatToDisplayDate(invoice.created_at);
       const lastEntry = acc[acc.length - 1];
       const cumulativeAmount = (lastEntry?.amount || 0) + invoice.amount;
       acc.push({ date, amount: cumulativeAmount });

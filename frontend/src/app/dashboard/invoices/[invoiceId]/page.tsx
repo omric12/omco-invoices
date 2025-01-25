@@ -15,7 +15,7 @@ export default async function InvoiceIdPage({
   params: Promise<{ invoiceId: string }>;
 }) {
   const slug = (await params).invoiceId;
-  const { invData } = await getInvoiceById(slug);
+  const invData = await getInvoiceById(slug);
   return (
     <>
       <div>
@@ -30,7 +30,9 @@ export default async function InvoiceIdPage({
                 <p className='pb-3 text-4xl font-bold'>INVOICE</p>
                 <p className='text-sm font-bold'>
                   INVOICE NO.{' '}
-                  <span className='pl-1 font-normal'>{invData.number}</span>
+                  <span className='pl-1 font-normal'>
+                    {invData.number ?? 'N/A'}
+                  </span>
                 </p>
                 <p className='text-sm font-bold'>
                   DUE DATE:{' '}

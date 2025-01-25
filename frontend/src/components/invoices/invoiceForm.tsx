@@ -1,13 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { ChevronLeft, Upload } from 'lucide-react';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '../ui/form';
+import { InvoiceData, InvoicePaymentMethod } from '@/types/invoiceType';
 import {
   Select,
   SelectContent,
@@ -15,21 +14,38 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { createInvoice, updateInvoice } from '@/actions/invoices-actions';
 
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { ChevronLeft } from 'lucide-react';
 import { Input } from '../ui/input';
-import { InvoiceSchema } from '@/lib/schemas/invoiceSchema';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import moment from 'moment';
+import { updateInvoice } from '@/actions/invoices-actions';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function InvoiceForm({ invData }) {
+interface InvoiceProps {
+  invData: InvoiceData;
+}
+
+const InvoiceSchema = z.object({
+  name: z.string(),
+  amount: z.number(),
+  date: z.string(),
+  payment_method: z.nativeEnum(InvoicePaymentMethod),
+  description: z.string().optional(),
+  items_quantity: z.number().optional(),
+  customer_name: z.string(),
+  customer_phone: z.string().optional(),
+  customer_address: z.string().optional(),
+  customer_email: z.string().optional(),
+});
+
+export default function InvoiceForm({ invData }: InvoiceProps) {
   // console.log('invData', invData);
   const router = useRouter();
   const form = useForm({
@@ -49,8 +65,10 @@ export default function InvoiceForm({ invData }) {
   });
 
   async function handleSubmit(data: z.infer<typeof InvoiceSchema>) {
-    // console.log('handle submit', { data });
-    // console.log('handle invData.id', invData.ID);
+    if (!invData.ID) {
+      console.error('Invoice ID not found');
+      return;
+    }
     await updateInvoice(invData.ID, data);
     router.push('/dashboard/invoices');
   }
