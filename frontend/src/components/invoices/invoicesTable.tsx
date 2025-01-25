@@ -16,10 +16,11 @@ import {
   TableRow,
 } from '../ui/table';
 
+import { InvoiceData } from '@/types/invoiceType';
 import Link from 'next/link';
 import moment from 'moment';
 
-export function InvoicesTable({ tableData }) {
+export function InvoicesTable({ tableData }: { tableData: InvoiceData[] }) {
   return (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
@@ -33,17 +34,21 @@ export function InvoicesTable({ tableData }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {tableData.map((invoice: Invoice) => (
-          <TableRow key={invoice.ID}>
-            <TableCell className='font-medium'>{invoice.number}</TableCell>
-            <TableCell>{moment(invoice.date).format('DD/MM/YYYY')}</TableCell>
-            <TableCell>{invoice.payment_method}</TableCell>
-            <TableCell>{invoice.amount}</TableCell>
-            <TableCell className='text-right '>
-              <OptionsMenu invoiceId={invoice.ID} />
-            </TableCell>
-          </TableRow>
-        ))}
+        {tableData
+          .filter(
+            (invoice): invoice is InvoiceData & { ID: string } => !!invoice.ID
+          )
+          .map((invoice) => (
+            <TableRow key={invoice.ID}>
+              <TableCell className='font-medium'>{invoice.number}</TableCell>
+              <TableCell>{moment(invoice.date).format('DD/MM/YYYY')}</TableCell>
+              <TableCell>{invoice.payment_method}</TableCell>
+              <TableCell>{invoice.amount}</TableCell>
+              <TableCell className='text-right '>
+                <OptionsMenu invoiceId={invoice.ID} />
+              </TableCell>
+            </TableRow>
+          ))}
       </TableBody>
       <TableFooter>
         <TableRow>

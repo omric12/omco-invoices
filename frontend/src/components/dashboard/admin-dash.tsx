@@ -25,17 +25,15 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 
+import { SummaryType } from '@/types/summaryType';
 import { formatToDisplayDate } from '@/lib/date-utils';
-import { useState } from 'react';
 
-// Remove the old formatDate function
-function formatDate(dateString: string): string {
-  const date = new Date(dateString.split(' ')[0]); // Remove the timezone offset
-  return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+interface AdminDashboardProps {
+  summary: SummaryType;
 }
 
-export default function AdminDashboard() {
-  const [data] = useState(invoiceData);
+export default function AdminDashboard({ summary }: AdminDashboardProps) {
+  const data = summary.Invoices;
 
   // Calculate summary statistics
   // const totalAmount = data.reduce((sum, invoice) => sum + invoice.amount, 0);

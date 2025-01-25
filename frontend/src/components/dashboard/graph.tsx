@@ -28,13 +28,6 @@ import {
 import { SummaryType } from '@/types/summaryType';
 import { formatToDisplayDate } from '@/lib/date-utils';
 
-// Helper function to parse and format dates
-// Remove the old formatDate function
-function formatDate(dateString: string): string {
-  const date = new Date(dateString.split(' ')[0]); // Remove the timezone offset
-  return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-}
-
 interface DashboardGraphsProps {
   summary: SummaryType;
 }
